@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :work_weeks
   resources :invoices
   devise_for :users
   get 'welcome/index'

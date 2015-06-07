@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Started at:</strong>
+  <%= @work_week.started_at %>
+</p>
+
+<p>
+  <strong>Ended at:</strong>
+  <%= @work_week.ended_at %>
+</p>
+
+<p>
+  <strong>Notes:</strong>
+  <%= @work_week.notes %>
+</p>
+
+<p>
+  <strong>Hours:</strong>
+  <%= @work_week.hours %>
+</p>
+
+<p>
+  <strong>Invoice:</strong>
+  <%= @work_week.invoice_id %>
+</p>
+
+<%= link_to 'Edit', edit_work_week_path(@work_week) %> |
+<%= link_to 'Back', work_weeks_path %>

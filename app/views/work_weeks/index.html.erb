@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Work Weeks</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Started at</th>
+      <th>Ended at</th>
+      <th>Notes</th>
+      <th>Hours</th>
+      <th>Invoice</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @work_weeks.each do |work_week| %>
+      <tr>
+        <td><%= work_week.started_at %></td>
+        <td><%= work_week.ended_at %></td>
+        <td><%= work_week.notes %></td>
+        <td><%= work_week.hours %></td>
+        <td><%= work_week.invoice_id %></td>
+        <td><%= link_to 'Show', work_week %></td>
+        <td><%= link_to 'Edit', edit_work_week_path(work_week) %></td>
+        <td><%= link_to 'Destroy', work_week, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Work week', new_work_week_path %>
