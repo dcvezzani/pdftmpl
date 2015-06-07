@@ -1,0 +1,6 @@
+./bin/rails g controller Welcome index
+./bin/rails generate devise User
+./bin/rails g scaffold Invoice invoiced_at:date subtotal:float total:float notes:text
+./bin/rails g scaffold WorkWeek started_at:date ended_at:date notes:text hours:float invoice_id:integer
+
+rails g devise:views

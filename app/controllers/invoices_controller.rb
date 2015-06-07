@@ -1,5 +1,5 @@
 class InvoicesController < ApplicationController
-  before_action :set_invoice, only: [:show, :edit, :update, :destroy]
+  before_action :set_invoice, only: [:show, :report, :edit, :calc, :update, :destroy]
 
   # GET /invoices
   # GET /invoices.json
@@ -10,6 +10,14 @@ class InvoicesController < ApplicationController
   # GET /invoices/1
   # GET /invoices/1.json
   def show
+  end
+
+  # GET /report/1
+  # GET /report/1.json
+  def report
+    respond_to do |format|
+      format.pdf { send_file InvoicePdf.new(current_user, @invoice).export, type: 'application/pdf' }
+    end
   end
 
   # GET /invoices/new
@@ -43,6 +51,22 @@ class InvoicesController < ApplicationController
     respond_to do |format|
       if @invoice.update(invoice_params)
         format.html { redirect_to @invoice, notice: 'Invoice was successfully updated.' }
+        format.json { render :show, status: :ok, location: @invoice }
+      else
+        format.html { render :edit }
+        format.json { render json: @invoice.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /calc/1
+  # PATCH/PUT /calc/1.json
+  def calc
+    respond_to do |format|
+      @invoice.calculate_totals(current_user.pay_rate)
+
+      if @invoice.save
+        format.html { redirect_to @invoice, notice: 'Totals for invoice were successfully calculated and applied.' }
         format.json { render :show, status: :ok, location: @invoice }
       else
         format.html { render :edit }

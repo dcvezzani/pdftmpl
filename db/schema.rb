@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150607030418) do
+ActiveRecord::Schema.define(version: 20150607030829) do
+
+  create_table "invoices", force: :cascade do |t|
+    t.date     "invoiced_at"
+    t.float    "subtotal"
+    t.float    "total"
+    t.text     "notes"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -31,5 +40,15 @@ ActiveRecord::Schema.define(version: 20150607030418) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+
+  create_table "work_weeks", force: :cascade do |t|
+    t.date     "started_at"
+    t.date     "ended_at"
+    t.text     "notes"
+    t.float    "hours"
+    t.integer  "invoice_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 end

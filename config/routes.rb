@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   resources :work_weeks
-  resources :invoices
+  resources :invoices do
+    member do
+      get 'report'
+      put 'calc'
+    end
+  end
+
   devise_for :users
   get 'welcome/index'
 

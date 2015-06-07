@@ -20,5 +20,10 @@
   <%= @invoice.notes %>
 </p>
 
+<%= form_for @invoice, url: calc_invoice_path(@invoice), method: :put do |f| %>
+  <%= f.submit 'Calculate' %>
+<% end %>
+
+<%= link_to 'Report', report_invoice_path(@invoice, :format => 'pdf') %> |
 <%= link_to 'Edit', edit_invoice_path(@invoice) %> |
 <%= link_to 'Back', invoices_path %>
