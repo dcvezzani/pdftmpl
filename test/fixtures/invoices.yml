@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  invoiced_at: 2015-06-06
+  subtotal: 1.5
+  total: 1.5
+  notes: MyText
+
+two:
+  invoiced_at: 2015-06-06
+  subtotal: 1.5
+  total: 1.5
+  notes: MyText
