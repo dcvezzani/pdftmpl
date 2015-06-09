@@ -16,7 +16,13 @@ class InvoicesController < ApplicationController
   # GET /report/1.json
   def report
     respond_to do |format|
-      format.pdf { send_file InvoicePdf.new(current_user, @invoice).export, type: 'application/pdf' }
+      format.pdf { 
+        # pdf = InvoicePdf.new(current_user, @invoice).export
+        # send_file pdf[:filename], type: 'application/pdf' 
+
+        pdf = InvoicePdf.new(current_user, @invoice).export_02
+        send_data pdf[:body], type: 'application/pdf' 
+      }
     end
   end
 

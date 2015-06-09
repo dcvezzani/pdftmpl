@@ -1,7 +1,8 @@
 class InvoicePdf
   attr_reader :invoice, :user
   #CC_TEMPLATE = 'templates/cc-template-02.pdf'
-  CC_TEMPLATE = 'templates/cc-template-04.pdf'
+  # CC_TEMPLATE = 'templates/cc-template-04.pdf'
+  CC_TEMPLATE = 'templates/cc-template-04b.pdf'
 
   def initialize(user, invoice)
     @user = user
@@ -13,47 +14,107 @@ class InvoicePdf
     ("%.#{options[:precision]}f" % number)
   end
 
+  def export_02
+    pdf_template = IO.read(CC_TEMPLATE)
+    values = prepare_values
+    invoice_filename = values[:invoice_filename]
+    pdf_template.force_encoding('BINARY')
+
+    {
+      date: values[:date], 
+
+      w1_notes: values[:w1_notes], 
+      w1_hours: number_with_precision(values[:w1_hours], :precision => 2).to_s, 
+      w1_rate: number_with_precision(values[:w1_rate], :precision => 2).to_s, 
+      w1_cost: number_with_precision(values[:w1_cost], :precision => 2).to_s, 
+
+      w2_notes: values[:w2_notes], 
+      w2_hours: number_with_precision(values[:w2_hours], :precision => 2).to_s, 
+      w2_rate: number_with_precision(values[:w2_rate], :precision => 2).to_s, 
+      w2_cost: number_with_precision(values[:w2_cost], :precision => 2).to_s, 
+
+      subtotal: number_with_precision(values[:subtotal], :precision => 2).to_s, 
+      tax: number_with_precision(values[:tax], :precision => 2).to_s, 
+      total: number_with_precision(values[:total], :precision => 2).to_s, 
+
+      invoice_notes: values[:invoice_notes], 
+      invoice_number: values[:invoice_number]
+    }.each do |attr, value|
+      pdf_template.sub!(Regexp.new("{#{attr.to_s}}"), value)
+    end
+
+    {filename: invoice_filename, body: pdf_template}
+  end
+
   def export
     pdftk = PdfForms.new('/usr/local/bin/pdftk')
     pdftk.get_field_names CC_TEMPLATE
 
-    # hrs = [50.0, 60.0]
+    values = prepare_values
+    invoice_filename = values[:invoice_filename]
+
+    pdftk.fill_form CC_TEMPLATE, invoice_filename, 
+      {
+        date: values[:date], 
+
+        w1_notes: values[:w1_notes], 
+        w1_hours: number_with_precision(values[:w1_hours], :precision => 2).to_s, 
+        w1_rate: number_with_precision(values[:w1_rate], :precision => 2).to_s, 
+        w1_cost: number_with_precision(values[:w1_cost], :precision => 2).to_s, 
+ 
+        w2_notes: values[:w2_notes], 
+        w2_hours: number_with_precision(values[:w2_hours], :precision => 2).to_s, 
+        w2_rate: number_with_precision(values[:w2_rate], :precision => 2).to_s, 
+        w2_cost: number_with_precision(values[:w2_cost], :precision => 2).to_s, 
+
+        subtotal: number_with_precision(values[:subtotal], :precision => 2).to_s, 
+        tax: number_with_precision(values[:tax], :precision => 2).to_s, 
+        total: number_with_precision(values[:total], :precision => 2).to_s, 
+
+        invoice_notes: values[:invoice_notes], 
+        invoice_number: values[:invoice_number]
+      }
+
+    `./scripts/cleanup.sh #{invoice_filename}`
+
+    # output_path = output_file_path || "#{Rails.root}/tmp/pdfs/#{SecureRandom.uuid}.pdf" # make sure tmp/pdfs exists
+    {filename: "#{Rails.root}/#{invoice_filename}", body: nil}
+  end
+
+  def prepare_values
     hrs = self.invoice.work_weeks.map{|ww| ww.hours or 0.0}
+    # hrs = [50.0, 60.0]
     # hrs = self.invoice.work_weeks.inject(0.0){|a,b| a += b}
 
-    # rate = 57.50
     rate = user.pay_rate
-
     self.invoice.calculate_totals(rate)
 
     invoice_prefix_seq = self.invoice.id.to_s.rjust(5, '0')
     invoice_suffix = self.invoice.invoiced_at.to_time.strftime("%Y-%m-%d")
     invoice_number = "CC#{invoice_prefix_seq}"
     invoice_filename = "pdftks/#{invoice_number}-#{invoice_suffix}.pdf"
+    
+    {
+     date: self.invoice.invoiced_at.strftime("%b %d, %Y"), 
 
-    pdftk.fill_form CC_TEMPLATE, invoice_filename, 
-      {date: self.invoice.invoiced_at.strftime("%b %d, %Y"), 
+     w1_notes: self.invoice.work_weeks[0].notes, 
+     w1_hours: hrs[0], 
+     w1_rate: rate, 
+     w1_cost: (hrs[0] * rate), 
 
-       w1_notes: self.invoice.work_weeks[0].notes, 
-       w1_hours: hrs[0].to_s, 
-       w1_rate: number_with_precision(rate.to_s, :precision => 2).to_s,
-       w1_cost: number_with_precision(hrs[0] * rate, :precision => 2).to_s, 
+     w2_notes: self.invoice.work_weeks[1].notes, 
+     w2_hours: hrs[1], 
+     w2_rate: rate, 
+     w2_cost: (hrs[1] * rate), 
 
-       w2_notes: self.invoice.work_weeks[1].notes, 
-       w2_hours: hrs[1].to_s, 
-       w2_rate: number_with_precision(rate.to_s, :precision => 2).to_s,
-       w2_cost: number_with_precision(hrs[1] * rate, :precision => 2).to_s, 
+     subtotal: self.invoice.subtotal, 
+     tax: 0.0, 
+     total: self.invoice.total, 
 
-       subtotal: number_with_precision(self.invoice.subtotal, :precision => 2).to_s, 
-       tax: '0.00', 
-       total: number_with_precision(self.invoice.total, :precision => 2).to_s, 
-       invoice_notes: self.invoice.notes, 
-       invoice_number: invoice_number}
-
-    `./scripts/cleanup.sh #{invoice_filename}`
-      #
-
-    # output_path = output_file_path || "#{Rails.root}/tmp/pdfs/#{SecureRandom.uuid}.pdf" # make sure tmp/pdfs exists
-    "#{Rails.root}/#{invoice_filename}"
+     invoice_notes: self.invoice.notes, 
+     invoice_number: invoice_number, 
+     invoice_filename: invoice_filename
+    }
   end
+  
 end
