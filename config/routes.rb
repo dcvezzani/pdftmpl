@@ -6,15 +6,12 @@ Rails.application.routes.draw do
       get 'report'
       put 'calc'
     end
-
-    collection do
-      get 'index2'
-    end
   end
 
   devise_for :users
   get 'welcome/index'
   get 'home/index'
+  # get 'index.html', :controller => 'home', :action => 'index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -15,8 +15,16 @@
 // require turbolinks
 // require_tree .
 //
+//
 //= require jquery.min.js
+//
 // require angular.min.js
 //= require angular/angular
+//= require angular-route/angular-route
+//= require angular-rails-templates
+//
+//= require_tree ./templates
+//
 //= require html5shim.min.js
 //= require modernizr.min.js
+//= require app.coffee
