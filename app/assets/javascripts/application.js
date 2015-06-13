@@ -16,6 +16,7 @@
 // require_tree .
 //
 //= require jquery.min.js
-//= require angular.min.js
+// require angular.min.js
+//= require angular/angular
 //= require html5shim.min.js
 //= require modernizr.min.js
