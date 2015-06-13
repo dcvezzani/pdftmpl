@@ -7,6 +7,13 @@ class InvoicesController < ApplicationController
     @invoices = Invoice.all
   end
 
+  # GET /invoices2
+  # GET /invoices2.json
+  def index2
+    @invoices = Invoice.all
+    render layout: 'angular'
+  end
+
   # GET /invoices/1
   # GET /invoices/1.json
   def show

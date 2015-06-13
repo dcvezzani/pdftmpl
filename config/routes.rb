@@ -5,6 +5,10 @@ Rails.application.routes.draw do
       get 'report'
       put 'calc'
     end
+
+    collection do
+      get 'index2'
+    end
   end
 
   devise_for :users
