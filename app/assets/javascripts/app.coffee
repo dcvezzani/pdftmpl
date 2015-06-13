@@ -1,7 +1,5 @@
-#= depend_on_asset "index.html"
-
 receta = angular.module('receta',[
-  //'templates',
+  'templates',
   'ngRoute',
   'controllers',
 ])
@@ -10,7 +8,7 @@ receta.config([ '$routeProvider',
   ($routeProvider)->
     $routeProvider
       .when('/',
-        templateUrl: '<%= asset_path("index.html") %>'
+        templateUrl: "index.html"
         controller: 'RecipesController'
       )
 ])

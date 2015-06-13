@@ -51,7 +51,8 @@ group :test, :development do
 end
 
 gem 'bower-rails'
-#gem 'angular-rails-templates'
+gem 'sprockets', '2.12.3'
+gem 'angular-rails-templates'
 
 gem 'pdf-forms'
 gem 'devise'
