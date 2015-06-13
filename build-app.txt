@@ -4,3 +4,162 @@
 ./bin/rails g scaffold WorkWeek started_at:date ended_at:date notes:text hours:float invoice_id:integer
 
 rails g devise:views
+
+
+### Create PDF documents (add form fields)
+http://www.wondershare.net/ad/pdf-editor/mac-new.html
+https://www.pdfescape.com/
+http://smallbusiness.chron.com/create-pdf-editable-fields-55640.html
+http://stackoverflow.com/questions/7059236/build-a-pdf-from-a-template-in-ruby-on-rails
+
+### Clean out watermarks
+http://superuser.com/questions/455462/how-to-remove-a-watermark-from-a-pdf-file
+
+https://github.com/ericmason/pdftk
+https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
+https://github.com/jkraemer/pdf-forms
+https://www.pdflabs.com/docs/pdftk-man-page/
+
+### FDF format
+Appears to only be used for filling fields.  It seems that it could be used for more.
+
+http://www.mactech.com/articles/mactech/Vol.20/20.11/FillOnlinePDFFormsUsingHTML/index.html
+http://blog.tremily.us/posts/PDF_forms/
+http://joewiz.org/2014/02/13/filling-pdf-forms-with-pdftk-xfdf-and-xquery/
+http://adamalbrecht.com/2014/01/31/pre-filling-pdf-form-templates-in-ruby-on-rails-with-pdftk/
+http://prawnpdf.org/manual.pdf
+
+
+### PDF format
+https://blog.idrsolutions.com/2013/01/understanding-the-pdf-file-format-overview/#pdf-format
+https://blog.idrsolutions.com/2010/08/understanding-the-pdf-file-format-interactive-elements/
+http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/pdf_reference_1-7.pdf
+http://www.myown1.com/linux/pdf_formfill.shtml
+
+### Install pdftk on Mac OS
+http://stackoverflow.com/questions/20804441/how-to-install-pdftk-on-mac-os-x
+
+```
+brew install https://raw.github.com/quantiverge/homebrew-binary/pdftk/pdftk.rb
+```
+
+Seems to be the best version I have come across.
+
+http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/PDF32000_2008.pdf
+
+
+http://apidock.com/rails/ActionController/Streaming/send_data
+
+Dealt with error on Heroku when starting up Rails console.  I had ignored the `./bin` directory and Heroku wasn't able to find the `./bin/rails` to start up the console.
+
+http://stackoverflow.com/questions/17583439/bin-rails-no-such-file-or-directory-w-ruby-2-rails-4-on-heroku
+http://stackoverflow.com/questions/16472981/heroku-rails-console-does-not-start-any-more
+http://stackoverflow.com/questions/23165913/bundler-and-wrong-binstubs
+
+Not sure why the app kept crashing on Heroku after deployment.  
+
+https://devcenter.heroku.com/articles/error-codes#h10-app-crashed
+
+As I troubleshooted, I ended up adding a .ruby-version file to ensure that 2.2.0 was being used.  I also realized that Heroku wouldn't know anything about pdftk.  I thought about using Hostmonster to host a service that I could use to manipulate and fill in PDF documents.  I'm not sure how to install other apps (if that's even possible) on Hostmonster.  The host Juventa has there is Linux based and `apt-get` is not installed.  But wait, Linux doesn't  use `apt-get` -- instead `yum` can be used.
+
+https://www.pdflabs.com/docs/install-pdftk-on-redhat-or-centos/
+
+But do I really want to risk hosing Juventa's server and affect her photography business?  No, not really.  I better think of something else.  Instead, I will decrypt the pdf and put place holders where the data needs to go.  I will use a utility to read in the pdf, fill in the place holders and stream the pdf to the client.  That way I've solved the issue with writing to disk as well, which is not a good idea while hosting an app on Heroku.
+
+Heroku kept complaining there was more than one app.  For some reason, updating `.git/config` to use the `git` protocol seems to solve the problem.
+
+http://stackoverflow.com/questions/17555099/bored-to-write-app-name-in-every-heroku-command-though-i-got-only-1-app
+
+```
+git@heroku.com:[heroku-app-1234].git
+```
+
+Created a Heroku account for `dave@reliacode.com` to hold my business related apps.
+
+Refamiliarized myself with the notion of Heroku "accounts".
+
+https://github.com/ddollar/heroku-accounts
+
+Generated new key for Heroku Reliacode account.
+
+https://help.github.com/articles/generating-ssh-keys/
+
+Heroku really makes it easy to get started and use.
+
+Intro: https://devcenter.heroku.com/articles/getting-started-with-ruby#introduction
+Access the database: https://devcenter.heroku.com/articles/getting-started-with-ruby#use-a-database
+Create and deploy: https://devcenter.heroku.com/articles/getting-started-with-ruby#deploy-the-app
+Configuring Puma: https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server#adding-puma-to-your-application
+
+While trying to modify a file (replacing place holders with values using regular expressions), I had to force the encoding to binary since there were several special characters in the pdf file.
+
+http://stackoverflow.com/questions/3184238/rails-send-data-throws-invalid-byte-sequence-in-utf-8-but-why
+
+Figuring out how to display a floating number in Rails was a little cryptic, but easy enough.
+
+http://stackoverflow.com/questions/11782781/how-to-display-output-with-two-digits-of-precision
+
+Auto load files (Rails) that are located in the `lib` directory.
+
+http://stackoverflow.com/questions/19098663/auto-loading-lib-files-in-rails-4
+
+```
+config.autoload_paths << Rails.root.join('lib')
+```
+
+Devise is one of the best ways to add authentication to a Rails app.
+
+https://github.com/plataformatec/devise
+http://www.jackiejohnston.us/blog/setting-up-user-authentication-with-devise/
+
+Reading command line arguments in a bash script.
+
+http://how-to.wikia.com/wiki/How_to_read_command_line_arguments_in_a_bash_script
+
+Dealing with encoding issues while using sed.
+
+http://stackoverflow.com/questions/11287564/getting-sed-error-illegal-byte-sequence-in-bash
+
+```
+LANG=C sed ...
+```
+
+Great reference/tutorial on sed.
+
+http://www.grymoire.com/Unix/Sed.html
+
+Cask is like homebrew for OSx apps?
+
+http://caskroom.io/
+
+Needed to dump the sqlite database contents so they could be imported into postgre sql.
+
+http://stackoverflow.com/questions/4581727/convert-sqlite-sql-dump-file-to-postgresql
+
+Great command line parser for json.
+
+http://stedolan.github.io/jq/download/
+
+Rails app included bi
+
+http://stackoverflow.com/questions/23165913/bundler-and-wrong-binstubs
+
+
+Solr control panel (web application).
+
+http://stackoverflow.com/questions/2395089/how-do-i-find-out-version-of-currently-running-solr
+http://10.0.0.4:8983/solr/#/~cores/gettingstarted_shard1_replica1
+
+Other info on Solr
+
+http://lucene.apache.org/solr/quickstart.html
+http://www.solrtutorial.com/schema-xml.html
+http://apache.osuosl.org/lucene/solr/5.1.0/
+https://cwiki.apache.org/confluence/display/solr/Moving+to+the+New+solr.xml+Format
+https://cwiki.apache.org/confluence/display/solr/Format+of+solr.xml
+
+Running RSpec tests with wisdom
+
+http://jeffkreeftmeijer.com/2010/making-rspec-stop-operation-immediately-after-failing/
+
+

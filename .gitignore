@@ -18,3 +18,4 @@ doc-tutorials
 *.log
 public/assets
 *.session
+db/development.sqlite3.sql
