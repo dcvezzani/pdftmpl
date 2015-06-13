@@ -51,7 +51,7 @@ group :test, :development do
 end
 
 gem 'bower-rails'
-gem 'angular-rails-templates'
+#gem 'angular-rails-templates'
 
 gem 'pdf-forms'
 gem 'devise'
