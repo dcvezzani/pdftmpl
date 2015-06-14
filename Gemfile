@@ -56,6 +56,7 @@ gem 'angular-rails-templates'
 
 gem 'pdf-forms'
 gem 'devise'
+gem 'faker'
 
 group :production do
   gem 'rails_12factor'

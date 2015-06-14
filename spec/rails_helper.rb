@@ -4,14 +4,7 @@ require File.expand_path('../../config/environment', __FILE__)
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'spec_helper'
-
 require 'rspec/rails'
-# require 'rspec/autorun'
-require 'capybara/rails'
-
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
-
-ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -56,34 +49,4 @@ RSpec.configure do |config|
   # The different available types are documented in the features, such as in
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
-
-  config.expect_with :rspec do |c|
-    c.syntax = :expect
-  end
-
-  config.before(:suite) do
-    DatabaseCleaner.clean_with :truncation
-    DatabaseCleaner.clean_with :transaction
-  end
-
-  config.after(:each) do
-    ActionMailer::Base.deliveries.clear
-  end
-
-  config.around(:each, type: :feature, js: true) do |ex|
-    DatabaseCleaner.strategy = :truncation
-    DatabaseCleaner.start
-    self.use_transactional_fixtures = false
-    ex.run
-    self.use_transactional_fixtures = true
-    DatabaseCleaner.clean
-  end
-
-  # config.treat_symbols_as_metadata_keys_with_true_values = true
-  config.infer_base_class_for_anonymous_controllers = false
-  config.order = "random" 
-  
-  config.include FactoryGirl::Syntax::Methods
-  config.include Devise::TestHelpers, type: :controller
-  config.include Warden::Test::Helpers  
 end

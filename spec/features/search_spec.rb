@@ -1,37 +1,21 @@
-require 'rails_helper'
+require "rails_helper"
+include Warden::Test::Helpers             ## including some warden magic
+Warden.test_mode!                         ## telling warden we are testing stuff
 
-RSpec.describe HomeController, :type => :controller do
-  include Capybara::DSL
+RSpec.feature "Looking up recipes", :type => :feature, js: true do
 
-  describe "anonymous user" do
-    before :each do
-      # This simulates an anonymous user
-      login_with nil
-    end
-
-    it "should be redirected to signin" do
-      get :index
-      expect( response ).to redirect_to( new_user_session_path )
-    end
+  before(:each) do
+    user = FactoryGirl.create(:user)
+    login_as(user , :scope => :user)   ## our instant magic authentication
   end
 
-  describe "authenticated user" do
-    before :each do
-      # This simulates an anonymous user
-      login_with create( :user )
-    end
+  scenario "finding recipes" do
+    visit '/'
+    fill_in "keywords", with: "baked"
+    click_on "Search"
 
-    describe "finding recipes" do
-      it "should search for baked and find results" do
-        visit '/'
-        debugger
-        fill_in "keywords", with: "baked"
-        click_on "Search"
-
-        expect(page).to have_content("Baked Potato")
-        expect(page).to have_content("Baked Brussel Sprouts")
-      end
-    end
+    expect(page).to have_content("Baked Potato")
+    expect(page).to have_content("Baked Brussel Sprouts")
   end
 
 end
