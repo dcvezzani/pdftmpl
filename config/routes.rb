@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'recipes/index'
+
   resources :work_weeks
   resources :invoices do
     member do
