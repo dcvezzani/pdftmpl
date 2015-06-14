@@ -1,4 +1,6 @@
 require "rails_helper"
+
+# kudos: http://blog.pixarea.com/2013/01/making-rspec-feature-specs-easy-with-devise/
 include Warden::Test::Helpers             ## including some warden magic
 Warden.test_mode!                         ## telling warden we are testing stuff
 

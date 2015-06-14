@@ -1,15 +1,20 @@
 receta = angular.module('receta',[
   'templates',
   'ngRoute',
+  'ngResource',  
   'controllers',
 ])
 
 receta.config([ '$routeProvider',
   ($routeProvider)->
     $routeProvider
-      .when('/',
+      .when('/recipes',
         templateUrl: "index.html"
         controller: 'RecipesController'
+      )
+      .when('/',
+        templateUrl: "invoices.html"
+        controller: 'InvoicesController'
       )
 ])
 
@@ -33,8 +38,9 @@ recipes = [
 ]
 
 controllers = angular.module('controllers',[])
-controllers.controller("RecipesController", [ '$scope', '$routeParams', '$location',
-  ($scope,$routeParams,$location)->
+
+controllers.controller("RecipesController", [ '$scope', '$routeParams', '$location', '$resource',
+  ($scope,$routeParams,$location,$resource)->  
     $scope.search = (keywords)->  $location.path("/").search('keywords',keywords)
 
     if $routeParams.keywords
@@ -42,4 +48,12 @@ controllers.controller("RecipesController", [ '$scope', '$routeParams', '$locati
       $scope.recipes = recipes.filter (recipe)-> recipe.name.toLowerCase().indexOf(keywords) != -1
     else
       $scope.recipes = []
+])
+
+controllers.controller("InvoicesController", [ '$scope', '$routeParams', '$location', '$resource',
+  ($scope,$routeParams,$location,$resource)->
+    $scope.search = ()->  $location.path("/invoices")
+
+    Invoice = $resource('/invoices', { format: 'json' })
+    Invoice.query((results)-> $scope.invoices = results)
 ])
