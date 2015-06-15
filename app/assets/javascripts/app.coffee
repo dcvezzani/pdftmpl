@@ -8,34 +8,35 @@ receta = angular.module('receta',[
 receta.config([ '$routeProvider',
   ($routeProvider)->
     $routeProvider
-      .when('/recipes',
+      .when('/',
         templateUrl: "index.html"
         controller: 'RecipesController'
       )
-      .when('/',
+      .when('/invoices',
         templateUrl: "invoices.html"
         controller: 'InvoicesController'
       )
 ])
 
-recipes = [
-  {
-    id: 1
-    name: 'Baked Potato w/ Cheese'
-  },
-  {
-    id: 2
-    name: 'Garlic Mashed Potatoes',
-  },
-  {
-    id: 3
-    name: 'Potatoes Au Gratin',
-  },
-  {
-    id: 4
-    name: 'Baked Brussel Sprouts',
-  },
-]
+recipes = []
+# recipes = [
+#   {
+#     id: 1
+#     name: 'Baked Potato w/ Cheese'
+#   },
+#   {
+#     id: 2
+#     name: 'Garlic Mashed Potatoes',
+#   },
+#   {
+#     id: 3
+#     name: 'Potatoes Au Gratin',
+#   },
+#   {
+#     id: 4
+#     name: 'Baked Brussel Sprouts',
+#   },
+# ]
 
 controllers = angular.module('controllers',[])
 
@@ -43,9 +44,15 @@ controllers.controller("RecipesController", [ '$scope', '$routeParams', '$locati
   ($scope,$routeParams,$location,$resource)->  
     $scope.search = (keywords)->  $location.path("/").search('keywords',keywords)
 
+    Recipe = $resource('/recipes/index', { format: 'json' })
+    # Recipe = $resource('/recipes/:recipeId', { recipeId: "@id", format: 'json' })
+    # Recipe = $resource('/recipes', { format: 'json' })
+
     if $routeParams.keywords
-      keywords = $routeParams.keywords.toLowerCase()
-      $scope.recipes = recipes.filter (recipe)-> recipe.name.toLowerCase().indexOf(keywords) != -1
+      Recipe.query(keywords: $routeParams.keywords, (results)-> $scope.recipes = results)
+      # keywords = $routeParams.keywords.toLowerCase()
+      # $scope.recipes = recipes.filter (recipe)-> recipe.name.toLowerCase().indexOf(keywords) != -1
+      
     else
       $scope.recipes = []
 ])
