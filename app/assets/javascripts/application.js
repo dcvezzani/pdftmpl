@@ -29,3 +29,4 @@
 //= require html5shim.min.js
 //= require modernizr.min.js
 //= require app.coffee
+//= require_tree ./controllers
