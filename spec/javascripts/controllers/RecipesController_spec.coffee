@@ -73,5 +73,5 @@ describe "RecipesController", ->
     it 'redirects to itself with a keyword param', ->
       keywords = 'foo'
       scope.search(keywords)
-      expect(location.path()).toBe('/')
+      expect(location.path()).toBe('/recipes')
       expect(location.search()).toEqualData({keywords: keywords})

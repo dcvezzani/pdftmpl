@@ -34,7 +34,7 @@ RSpec.feature "Looking up recipes", :type => :feature, js: true do
   end
 
   scenario "finding recipes" do
-    visit '/'
+    visit '/#/recipes'
     fill_in "keywords", with: "baked"
     click_on "Search"
 

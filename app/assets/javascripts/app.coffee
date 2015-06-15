@@ -8,24 +8,14 @@ receta = angular.module('receta',[
 receta.config([ '$routeProvider',
   ($routeProvider)->
     $routeProvider
-      .when('/',
+      .when('/recipes',
         templateUrl: "index.html"
         controller: 'RecipesController'
       )
-      .when('/invoices',
+      .when('/',
         templateUrl: "invoices.html"
         controller: 'InvoicesController'
       )
 ])
 
-recipes = []
-
 controllers = angular.module('controllers',[])
-
-controllers.controller("InvoicesController", [ '$scope', '$routeParams', '$location', '$resource',
-  ($scope,$routeParams,$location,$resource)->
-    $scope.search = ()->  $location.path("/invoices")
-
-    Invoice = $resource('/invoices', { format: 'json' })
-    Invoice.query((results)-> $scope.invoices = results)
-])
