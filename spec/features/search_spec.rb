@@ -24,7 +24,7 @@ RSpec.feature "Looking up recipes", :type => :feature, js: true do
   end
 
   scenario "searching recipes" do
-    visit '/recipes/index?format=json&keywords=baked'
+    visit '/recipes?format=json&keywords=baked'
 
     expect(page).to have_content("Baked Potato")
     expect(page).to have_content("Baked Brussel Sprouts")

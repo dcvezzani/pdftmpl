@@ -6,7 +6,7 @@ controllers.controller("RecipesController", [ '$scope', '$routeParams', '$locati
   ($scope,$routeParams,$location,$resource)->  
     $scope.search = (keywords)->  $location.path("/recipes").search('keywords',keywords)
 
-    Recipe = $resource('/recipes/index', { format: 'json' })
+    Recipe = $resource('/recipes/:recipeId', { recipeId: "@id", format: 'json' })
 
     if $routeParams.keywords
       Recipe.query(keywords: $routeParams.keywords, (results)-> $scope.recipes = results)
