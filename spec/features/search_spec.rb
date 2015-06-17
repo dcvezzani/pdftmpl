@@ -6,13 +6,6 @@ Warden.test_mode!                         ## telling warden we are testing stuff
 
 RSpec.feature "Looking up recipes", :type => :feature, js: true do
 
-  # before(:all) do
-  #   Recipe.create!(name: 'Baked Potato w/ Cheese')
-  #   Recipe.create!(name: 'Garlic Mashed Potatoes')
-  #   Recipe.create!(name: 'Potatoes Au Gratin')
-  #   Recipe.create!(name: 'Baked Brussel Sprouts')
-  # end
-
   before(:each) do
     user = FactoryGirl.create(:user)
     login_as(user , :scope => :user)   ## our instant magic authentication
