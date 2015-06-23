@@ -15,10 +15,12 @@ class InvoicePdf
   end
 
   def export_02
-    pdf_template = IO.read(CC_TEMPLATE)
+    # pdf_template = IO.read(CC_TEMPLATE)
+    pdf_template = File.open(CC_TEMPLATE, "r:UTF-8", &:read)
+    # pdf_template = "alsdkjl askdjl askdj lasdjk {invoice_notes} alsdk laskd jlaks djlkjas"
     values = prepare_values
     invoice_filename = values[:invoice_filename]
-    pdf_template.force_encoding('BINARY')
+    # pdf_template.force_encoding('UTF-8')
 
     {
       date: values[:date], 
@@ -40,10 +42,26 @@ class InvoicePdf
       invoice_notes: values[:invoice_notes], 
       invoice_number: values[:invoice_number]
     }.each do |attr, value|
-      pdf_template.sub!(Regexp.new("{#{attr.to_s}}"), value)
+      term = "{#{attr.to_s}}"
+      # term = "{invoice_notes}"; value = 'Efrén'
+      fnd = pdf_template.index(term)
+      _before = pdf_template[0, fnd]
+      # pdf_template[fnd, term.length]
+      _after = pdf_template[fnd+term.length, (pdf_template.length - fnd+term.length)]
+      pdf_template = _before + value + _after
+      
+      # pdf_template.sub!(Regexp.new("{#{attr.to_s}}"), value)
     end
 
     {filename: invoice_filename, body: pdf_template}
+  end
+
+  def value_with_special_characters(value)
+    new_value = "(þÿ"
+    value.split(//).each do |c|
+      new_value += '\000' + c
+    end
+    new_value += ")"
   end
 
   def export
