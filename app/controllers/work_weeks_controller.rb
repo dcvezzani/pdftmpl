@@ -1,10 +1,11 @@
 class WorkWeeksController < ApplicationController
+  before_action :set_invoice
   before_action :set_work_week, only: [:show, :edit, :update, :destroy]
 
   # GET /work_weeks
   # GET /work_weeks.json
   def index
-    @work_weeks = WorkWeek.all
+    @work_weeks = @invoice.work_weeks
   end
 
   # GET /work_weeks/1
@@ -65,6 +66,10 @@ class WorkWeeksController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_work_week
       @work_week = WorkWeek.find(params[:id])
+    end
+
+    def set_invoice
+      @invoice = Invoice.find(params[:invoice_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

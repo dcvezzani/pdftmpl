@@ -1,7 +1,7 @@
 class InvoicePdf
   attr_reader :invoice, :user
   #CC_TEMPLATE = 'templates/cc-template-02.pdf'
-  # CC_TEMPLATE = 'templates/cc-template-04.pdf'
+  #CC_TEMPLATE = 'templates/cc-template-04.pdf'
   CC_TEMPLATE = 'templates/cc-template-04b.pdf'
 
   def initialize(user, invoice)
@@ -40,7 +40,11 @@ class InvoicePdf
       invoice_notes: values[:invoice_notes], 
       invoice_number: values[:invoice_number]
     }.each do |attr, value|
-      pdf_template.sub!(Regexp.new("{#{attr.to_s}}"), value)
+      begin
+        pdf_template.sub!(Regexp.new("{#{attr.to_s}}"), value)
+      rescue Exception => e
+        raise "problem with #{attr} attribute: #{e.message}"
+      end
     end
 
     {filename: invoice_filename, body: pdf_template}
