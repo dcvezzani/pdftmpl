@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'pdf/show'
+
   resources :recipes, only: [:index, :show]
 
   resources :work_weeks
