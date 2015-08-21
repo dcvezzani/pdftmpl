@@ -11,7 +11,7 @@ class InvoicePdf
     @invoice = invoice
     @values = prepare_values
     record = PdfRecord.first
-    @values = {date: record.date}
+    @values = {date: record.created_at}
     
     fill_out
   end
@@ -32,7 +32,7 @@ class InvoicePdf
   alias_method :export_orig, :export
 
   def export
-    output_path = export_orig(default_output_path(@values[:invoice_filename]))
+    output_path = export_orig(default_output_path)#(@values[:invoice_filename]))
     {filename: output_path}
   end
   
