@@ -65,8 +65,8 @@ class InvoicePdf
   end
 
   def export
-    pdftk = PdfForms.new('/usr/local/bin/pdftk')
-    pdftk.get_field_names CC_TEMPLATE
+    # pdftk = PdfForms.new('/usr/local/bin/pdftk')
+    # pdftk.get_field_names CC_TEMPLATE
 
     values = prepare_values
     invoice_filename = values[:invoice_filename]
@@ -93,7 +93,7 @@ class InvoicePdf
         invoice_number: values[:invoice_number]
       }
 
-    `./scripts/cleanup.sh #{invoice_filename}`
+    # `./scripts/cleanup.sh #{invoice_filename}`
 
     # output_path = output_file_path || "#{Rails.root}/tmp/pdfs/#{SecureRandom.uuid}.pdf" # make sure tmp/pdfs exists
     {filename: "#{Rails.root}/#{invoice_filename}", body: nil}
@@ -134,5 +134,10 @@ class InvoicePdf
      invoice_filename: invoice_filename
     }
   end
+  
+  def pdftk
+    @pdftk ||= PdfForms.new(ENV['PDFTK_PATH'] || "/usr/local/bin/pdftk") # On my Mac, the location of pdftk was different than on my linux server.
+  end
+
   
 end
