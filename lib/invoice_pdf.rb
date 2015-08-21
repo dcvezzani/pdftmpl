@@ -10,7 +10,10 @@ class InvoicePdf
     @user = user
     @invoice = invoice
     @values = prepare_values
-    #fill_out
+    record = PdfRecord.first
+    @values = {date: record.date}
+    
+    fill_out
   end
 
   def number_with_precision(number, options = {precision: 2})
@@ -18,14 +21,14 @@ class InvoicePdf
     (!number.nil?) ? ("%.#{options[:precision]}f" % number) : 0.00
   end
 
-  def template_path
+  def xtemplate_path
     @template_path ||= "#{Rails.root}/templates/cc-template-04b.pdf"
   end
 
   alias_method :export_orig, :export
 
   def export
-    output_path = export_orig(default_output_path) #(@values[:invoice_filename])
+    output_path = export_orig(default_output_path(@values[:invoice_filename]))
     {filename: output_path}
   end
   
@@ -44,7 +47,7 @@ class InvoicePdf
     # end
     # fill :comments, "Hello, World"
 
-    # fill :date, @values[:date].to_s
+    fill :date, @values[:date].to_s
 # 
 #       date: values[:date], 
 # 
