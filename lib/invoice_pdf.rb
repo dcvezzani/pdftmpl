@@ -48,7 +48,7 @@ class InvoicePdf
     # end
     # fill :comments, "Hello, World"
 
-    fill :date, @values[:date].to_s
+    # fill :date, @values[:date].to_s
 # 
 #       date: values[:date], 
 # 
