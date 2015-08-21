@@ -22,6 +22,10 @@ class InvoicePdf
   end
 
   def template_path
+    @template_path ||= "#{Rails.root}/templates/cc-template-04d.pdf"
+  end
+
+  def xtemplate_path
     @template_path ||= "#{Rails.root}/templates/cc-template-04b.pdf"
   end
 
