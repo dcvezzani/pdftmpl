@@ -28,6 +28,7 @@ class InvoicePdf
     output_path = default_output_path(@values[:invoice_filename])
     export_orig(output_path)
 
+raise attributes.to_s
     pdftk.fill_form template_path, output_path, attributes
 
     {filename: output_path}
