@@ -1,8 +1,13 @@
-class TestPdfForm < FillablePdfForm
+require 'ostruct'
+
+class TestPdfForm
+  include FillablePdfForm
 
   def initialize(record)
     @record = record
-    super()
+    @user = OpenStruct.new
+    @user.age = (18..75).to_a.sample
+    fill_out
   end
 
   protected
@@ -12,7 +17,7 @@ class TestPdfForm < FillablePdfForm
     [:first_name, :last_name, :address, :address_2, :city, :state, :zip_code].each do |field|
       fill field, @record.send(field)
     end
-    fill :age, case @record.age
+    fill :age, case @user.age
       when nil then nil
       when 0..17 then '0_17'
       when 18..34 then '18_34'
