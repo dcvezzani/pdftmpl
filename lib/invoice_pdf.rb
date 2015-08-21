@@ -11,7 +11,7 @@ class InvoicePdf
 
   def number_with_precision(number, options = {precision: 2})
     #{"%.0#{options[:precision]}f" % number}
-    ("%.#{options[:precision]}f" % number)
+    (!number.nil?) ? ("%.#{options[:precision]}f" % number) : 0.00
   end
 
   def export_02
@@ -110,20 +110,20 @@ class InvoicePdf
     invoice_prefix_seq = self.invoice.id.to_s.rjust(5, '0')
     invoice_suffix = self.invoice.invoiced_at.to_time.strftime("%Y-%m-%d")
     invoice_number = "CC#{invoice_prefix_seq}"
-    invoice_filename = "pdftks/#{invoice_number}-#{invoice_suffix}.pdf"
-    
+    invoice_filename = "/app/tmp/#{invoice_number}-#{invoice_suffix}.pdf"
+
     {
      date: self.invoice.invoiced_at.strftime("%b %d, %Y"), 
 
-     w1_notes: self.invoice.work_weeks[0].notes, 
-     w1_hours: hrs[0], 
+     w1_notes: ((self.invoice.work_weeks.length > 0) ? self.invoice.work_weeks[0].notes : ""), 
+     w1_hours: (hrs[0] or 0.0), 
      w1_rate: rate, 
-     w1_cost: (hrs[0] * rate), 
+     w1_cost: ((hrs[0] or 0.0) * rate), 
 
-     w2_notes: self.invoice.work_weeks[1].notes, 
-     w2_hours: hrs[1], 
+     w1_notes: ((self.invoice.work_weeks.length > 1) ? self.invoice.work_weeks[1].notes : ""), 
+     w1_hours: (hrs[1] or 0.0), 
      w2_rate: rate, 
-     w2_cost: (hrs[1] * rate), 
+     w2_cost: ((hrs[1] or 0.0) * rate), 
 
      subtotal: self.invoice.subtotal, 
      tax: 0.0, 
