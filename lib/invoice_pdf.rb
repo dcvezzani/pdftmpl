@@ -28,7 +28,7 @@ class InvoicePdf
     output_path = default_output_path(@values[:invoice_filename])
     export_orig(output_path)
 
-raise attributes.to_s
+    raise [template_path, output_path, attributes.to_s].join("; ")
     pdftk.fill_form template_path, output_path, attributes
 
     {filename: output_path}
@@ -49,7 +49,7 @@ raise attributes.to_s
     # end
     # fill :comments, "Hello, World"
 
-    fill :date, 'asdf'
+    fill :date, values[:date].to_s
 # 
 #       date: values[:date], 
 # 
@@ -93,7 +93,7 @@ raise attributes.to_s
     invoice_prefix_seq = self.invoice.id.to_s.rjust(5, '0')
     invoice_suffix = self.invoice.invoiced_at.to_time.strftime("%Y-%m-%d")
     invoice_number = "CC#{invoice_prefix_seq}"
-    invoice_filename = "#{invoice_number}-#{invoice_suffix}.pdf"
+    invoice_filename = "#{invoice_number}-#{invoice_suffix}"
 
     {
      date: self.invoice.invoiced_at.strftime("%b %d, %Y"), 
