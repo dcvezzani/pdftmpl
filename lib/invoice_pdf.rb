@@ -10,7 +10,7 @@ class InvoicePdf
     @user = user
     @invoice = invoice
     @values = prepare_values
-    fill_out
+    #fill_out
   end
 
   def number_with_precision(number, options = {precision: 2})

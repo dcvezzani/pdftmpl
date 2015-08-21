@@ -17,10 +17,10 @@ class InvoicesController < ApplicationController
   def report
     respond_to do |format|
       format.pdf { 
-        send_file TestPdfForm.new(PdfRecord.first).export, type: 'application/pdf'
+        # send_file TestPdfForm.new(PdfRecord.first).export, type: 'application/pdf'
 
-        # pdf = InvoicePdf.new(current_user, @invoice).export
-        # send_file pdf[:filename], type: 'application/pdf' 
+        pdf = InvoicePdf.new(current_user, @invoice).export
+        send_file pdf[:filename], type: 'application/pdf' 
 
         # pdf = InvoicePdf.new(current_user, @invoice).export_02
         # send_data pdf[:body], type: 'application/pdf' 
