@@ -25,6 +25,10 @@ class InvoicePdf
     @template_path ||= "#{Rails.root}/templates/cc-template-04b.pdf"
   end
 
+  def template_path
+    @template_path ||= "#{Rails.root}/lib/pdf_templates/test_form.pdf"
+  end
+
   alias_method :export_orig, :export
 
   def export
