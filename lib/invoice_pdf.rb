@@ -73,24 +73,6 @@ class InvoicePdf
 
     pdftk.fill_form CC_TEMPLATE, invoice_filename, 
       {
-        date: values[:date], 
-
-        w1_notes: values[:w1_notes], 
-        w1_hours: number_with_precision(values[:w1_hours], :precision => 2).to_s, 
-        w1_rate: number_with_precision(values[:w1_rate], :precision => 2).to_s, 
-        w1_cost: number_with_precision(values[:w1_cost], :precision => 2).to_s, 
- 
-        w2_notes: values[:w2_notes], 
-        w2_hours: number_with_precision(values[:w2_hours], :precision => 2).to_s, 
-        w2_rate: number_with_precision(values[:w2_rate], :precision => 2).to_s, 
-        w2_cost: number_with_precision(values[:w2_cost], :precision => 2).to_s, 
-
-        subtotal: number_with_precision(values[:subtotal], :precision => 2).to_s, 
-        tax: number_with_precision(values[:tax], :precision => 2).to_s, 
-        total: number_with_precision(values[:total], :precision => 2).to_s, 
-
-        invoice_notes: values[:invoice_notes], 
-        invoice_number: values[:invoice_number]
       }
 
     # `./scripts/cleanup.sh #{invoice_filename}`
@@ -137,6 +119,10 @@ class InvoicePdf
   
   def pdftk
     @pdftk ||= PdfForms.new(ENV['PDFTK_PATH'] || "/usr/local/bin/pdftk") # On my Mac, the location of pdftk was different than on my linux server.
+  end
+
+  def output_dir
+    @output_dir ||= (ENV['PDFTK_OUTPUT_PATH'] ? ENV['PDFTK_OUTPUT_PATH'] : Rails.root('pdftks'))
   end
 
   
