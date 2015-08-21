@@ -25,11 +25,11 @@ class InvoicePdf
   alias_method :export_orig, :export
 
   def export
-    output_path = default_output_path(@values[:invoice_filename])
+    output_path = default_output_path #(@values[:invoice_filename])
     export_orig(output_path)
 
     raise [template_path, output_path, attributes.to_s].join("; ")
-    pdftk.fill_form template_path, output_path, attributes
+    pdftk.fill_form template_path, default_output_path, attributes
 
     {filename: output_path}
   end
