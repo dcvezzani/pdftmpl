@@ -21,11 +21,11 @@ class InvoicePdf
     (!number.nil?) ? ("%.#{options[:precision]}f" % number) : 0.00
   end
 
-  def xtemplate_path
+  def template_path
     @template_path ||= "#{Rails.root}/templates/cc-template-04b.pdf"
   end
 
-  def template_path
+  def xtemplate_path
     @template_path ||= "#{Rails.root}/lib/pdf_templates/test_form.pdf"
   end
 
