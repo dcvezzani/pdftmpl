@@ -11,7 +11,7 @@ class InvoicePdf
     @invoice = invoice
     @values = prepare_values
     record = PdfRecord.first
-    @values = {invoice_notes: @invoice.invoice_notes}
+    @values = {invoice_notes: @invoice.notes}
     
     fill_out
   end
