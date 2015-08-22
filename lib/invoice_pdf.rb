@@ -22,6 +22,10 @@ class InvoicePdf
   end
 
   def template_path
+    @template_path ||= "#{Rails.root}/templates/test_doc_02.pdf"
+  end
+
+  def xtemplate_path
     @template_path ||= "#{Rails.root}/templates/test_form.pdf"
   end
 
@@ -63,7 +67,8 @@ class InvoicePdf
     # end
     # fill :comments, "Hello, World"
 
-    fill :date, @values[:date].to_s
+    # fill :date, @values[:date].to_s
+    fill :name, 'xxxx'
 # 
 #       date: values[:date], 
 # 
