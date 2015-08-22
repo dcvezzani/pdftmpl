@@ -22,27 +22,13 @@ class InvoicePdf
   end
 
   def template_path
-    @template_path ||= "#{Rails.root}/templates/test_doc_02.pdf"
-  end
-
-  def xtemplate_path
-    @template_path ||= "#{Rails.root}/templates/test_form.pdf"
-  end
-
-  def xtemplate_path
-    @template_path ||= "#{Rails.root}/templates/roadhouse.pdf"
-  end
-
-  def xtemplate_path
-    @template_path ||= "#{Rails.root}/templates/cc-template-04d.pdf"
-  end
-
-  def xtemplate_path
-    @template_path ||= "#{Rails.root}/templates/cc-template-04b.pdf"
-  end
-
-  def xtemplate_path
-    @template_path ||= "#{Rails.root}/lib/pdf_templates/test_form.pdf"
+    @template_path ||= "#{Rails.root}/templates/cc-template-04e.pdf"
+    # @template_path ||= "#{Rails.root}/templates/test_doc_02.pdf"
+    # @template_path ||= "#{Rails.root}/templates/test_form.pdf"
+    # @template_path ||= "#{Rails.root}/templates/roadhouse.pdf"
+    # @template_path ||= "#{Rails.root}/templates/cc-template-04d.pdf"
+    # @template_path ||= "#{Rails.root}/templates/cc-template-04b.pdf"
+    # @template_path ||= "#{Rails.root}/lib/pdf_templates/test_form.pdf"
   end
 
   alias_method :export_orig, :export
@@ -68,7 +54,7 @@ class InvoicePdf
     # fill :comments, "Hello, World"
 
     # fill :date, @values[:date].to_s
-    fill :name, @values[:invoice_notes]
+    fill :invoice_notes, @values[:invoice_notes]
 # 
 #       date: values[:date], 
 # 
