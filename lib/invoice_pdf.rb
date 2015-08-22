@@ -2,16 +2,13 @@ class InvoicePdf
   include FillablePdfForm
 
   attr_reader :invoice, :user
-  #CC_TEMPLATE = 'templates/cc-template-02.pdf'
-  # CC_TEMPLATE = 'templates/cc-template-04.pdf'
-  # CC_TEMPLATE = 'templates/cc-template-04b.pdf'
 
   def initialize(user, invoice)
     @user = user
     @invoice = invoice
     @values = prepare_values
     record = PdfRecord.first
-    @values = {notes: @invoice.notes}
+    @values = prepare_values
     
     fill_out
   end
@@ -23,13 +20,6 @@ class InvoicePdf
 
   def template_path
     @template_path ||= "#{Rails.root}/templates/cc-invoice-master-w-fields.pdf"
-    # @template_path ||= "#{Rails.root}/templates/cc-template-04e.pdf"
-    # @template_path ||= "#{Rails.root}/templates/test_doc_02.pdf"
-    # @template_path ||= "#{Rails.root}/templates/test_form.pdf"
-    # @template_path ||= "#{Rails.root}/templates/roadhouse.pdf"
-    # @template_path ||= "#{Rails.root}/templates/cc-template-04d.pdf"
-    # @template_path ||= "#{Rails.root}/templates/cc-template-04b.pdf"
-    # @template_path ||= "#{Rails.root}/lib/pdf_templates/test_form.pdf"
   end
 
   alias_method :export_orig, :export
@@ -55,7 +45,28 @@ class InvoicePdf
     # fill :comments, "Hello, World"
 
     # fill :date, @values[:date].to_s
+    fill :date, @values[:date]
     fill :notes, @values[:notes]
+
+    fill :w1_notes, @values[:w1_notes]
+    fill :w1_hours, number_with_precision(@values[:w1_hours], :precision => 2).to_s
+    fill :w1_rate, number_with_precision(@values[:w1_rate], :precision => 2).to_s
+    fill :w1_total, number_with_precision(@values[:w1_total], :precision => 2).to_s
+
+    fill :w2_notes, @values[:w2_notes]
+    fill :w2_hours, number_with_precision(@values[:w2_hours], :precision => 2).to_s
+    fill :w2_rate, number_with_precision(@values[:w2_rate], :precision => 2).to_s
+    fill :w2_total, number_with_precision(@values[:w2_total], :precision => 2).to_s
+ 
+    fill :sub_hours, number_with_precision(@values[:sub_hours], :precision => 2).to_s
+    fill :sub_rate, number_with_precision(@values[:sub_rate], :precision => 2).to_s
+    fill :sub_total, number_with_precision(@values[:sub_total], :precision => 2).to_s
+ 
+    # fill :tax_rate, number_with_precision(@values[:sub_rate], :precision => 2).to_s
+    # fill :tax, number_with_precision(@values[:sub_total], :precision => 2).to_s
+ 
+    fill :total, number_with_precision(@values[:total], :precision => 2).to_s
+ 
 # 
 #       date: values[:date], 
 # 
@@ -103,23 +114,28 @@ class InvoicePdf
 
     {
      date: self.invoice.invoiced_at.strftime("%b %d, %Y"), 
+     invoice_number: invoice_number, 
+     # terms: '15 days', 
+     # tax_rate: '0.00%', 
 
      w1_notes: ((self.invoice.work_weeks.length > 0) ? self.invoice.work_weeks[0].notes : ""), 
      w1_hours: (hrs[0] or 0.0), 
      w1_rate: rate, 
-     w1_cost: ((hrs[0] or 0.0) * rate), 
+     w1_total: ((hrs[0] or 0.0) * rate), 
 
-     w1_notes: ((self.invoice.work_weeks.length > 1) ? self.invoice.work_weeks[1].notes : ""), 
-     w1_hours: (hrs[1] or 0.0), 
+     w2_notes: ((self.invoice.work_weeks.length > 1) ? self.invoice.work_weeks[1].notes : ""), 
+     w2_hours: (hrs[1] or 0.0), 
      w2_rate: rate, 
-     w2_cost: ((hrs[1] or 0.0) * rate), 
+     w2_total: ((hrs[1] or 0.0) * rate), 
 
-     subtotal: self.invoice.subtotal, 
-     tax: 0.0, 
+     sub_hours: hrs.inject(0.00){|a,b| a+b},
+     sub_rate: rate, 
+     sub_total: self.invoice.subtotal, 
+
+     # tax: 0.0, 
      total: self.invoice.total, 
 
-     invoice_notes: self.invoice.notes, 
-     invoice_number: invoice_number, 
+     notes: self.invoice.notes, 
      invoice_filename: invoice_filename
     }
   end
