@@ -11,7 +11,7 @@ class InvoicePdf
     @invoice = invoice
     @values = prepare_values
     record = PdfRecord.first
-    @values = {invoice_notes: @invoice.notes}
+    @values = {notes: @invoice.notes}
     
     fill_out
   end
@@ -22,7 +22,8 @@ class InvoicePdf
   end
 
   def template_path
-    @template_path ||= "#{Rails.root}/templates/cc-template-04e.pdf"
+    @template_path ||= "#{Rails.root}/templates/cc-invoice-master-w-fields.pdf"
+    # @template_path ||= "#{Rails.root}/templates/cc-template-04e.pdf"
     # @template_path ||= "#{Rails.root}/templates/test_doc_02.pdf"
     # @template_path ||= "#{Rails.root}/templates/test_form.pdf"
     # @template_path ||= "#{Rails.root}/templates/roadhouse.pdf"
@@ -54,7 +55,7 @@ class InvoicePdf
     # fill :comments, "Hello, World"
 
     # fill :date, @values[:date].to_s
-    fill :invoice_notes, @values[:invoice_notes]
+    fill :notes, @values[:notes]
 # 
 #       date: values[:date], 
 # 
