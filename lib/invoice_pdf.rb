@@ -2,16 +2,13 @@ class InvoicePdf
   include FillablePdfForm
 
   attr_reader :invoice, :user
-  #CC_TEMPLATE = 'templates/cc-template-02.pdf'
-  # CC_TEMPLATE = 'templates/cc-template-04.pdf'
-  # CC_TEMPLATE = 'templates/cc-template-04b.pdf'
 
   def initialize(user, invoice)
     @user = user
     @invoice = invoice
     @values = prepare_values
     record = PdfRecord.first
-    @values = {date: record.created_at}
+    @values = {notes: @invoice.notes}
     
     fill_out
   end
@@ -22,15 +19,7 @@ class InvoicePdf
   end
 
   def template_path
-    @template_path ||= "#{Rails.root}/templates/test_doc_02.pdf"
-  end
-
-  def xtemplate_path
-    @template_path ||= "#{Rails.root}/templates/cc-template-04b.pdf"
-  end
-
-  def xtemplate_path
-    @template_path ||= "#{Rails.root}/lib/pdf_templates/test_form.pdf"
+    @template_path ||= "#{Rails.root}/templates/cc-invoice-master-w-fields.pdf"
   end
 
   alias_method :export_orig, :export
@@ -56,7 +45,7 @@ class InvoicePdf
     # fill :comments, "Hello, World"
 
     # fill :date, @values[:date].to_s
-    fill :name, 'xxxx'
+    fill :notes, @values[:notes]
 # 
 #       date: values[:date], 
 # 
