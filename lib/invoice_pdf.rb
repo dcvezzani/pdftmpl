@@ -11,7 +11,7 @@ class InvoicePdf
     @invoice = invoice
     @values = prepare_values
     record = PdfRecord.first
-    @values = {date: record.created_at}
+    @values = {invoice_notes: record.invoice_notes}
     
     fill_out
   end
@@ -68,7 +68,7 @@ class InvoicePdf
     # fill :comments, "Hello, World"
 
     # fill :date, @values[:date].to_s
-    fill :name, values[:invoice_notes]
+    fill :name, @values[:invoice_notes]
 # 
 #       date: values[:date], 
 # 
