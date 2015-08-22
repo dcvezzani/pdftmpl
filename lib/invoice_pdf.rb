@@ -25,7 +25,7 @@ class InvoicePdf
   alias_method :export_orig, :export
 
   def export
-    output_path = export_orig(default_output_path)#(@values[:invoice_filename]))
+    output_path = export_orig(@values[:invoice_filename])#(default_output_path)
     {filename: output_path}
   end
   
@@ -108,9 +108,8 @@ class InvoicePdf
     rate = user.pay_rate
     self.invoice.calculate_totals(rate)
 
-    invoice_prefix_seq = self.invoice.id.to_s.rjust(5, '0')
+    invoice_number = self.invoice.ccid_value
     invoice_suffix = self.invoice.invoiced_at.to_time.strftime("%Y-%m-%d")
-    invoice_number = "CC#{invoice_prefix_seq}"
     invoice_filename = "#{invoice_number}-#{invoice_suffix}"
 
     w1_notes = format_work_week_notes(self.invoice.work_weeks[0].started_at, self.invoice.work_weeks[0].ended_at, self.invoice.work_weeks[0].notes)
@@ -139,7 +138,7 @@ class InvoicePdf
      # tax: 0.0, 
      total: self.invoice.total, 
 
-     notes: self.invoice.notes, 
+     notes: self.invoice.notes.strip.capitalize, 
      invoice_filename: invoice_filename
     }
   end

@@ -20,6 +20,11 @@
   <%= @invoice.notes %>
 </p>
 
+<p>
+  <strong>Invoice ID (CCID):</strong>
+  <%= @invoice.ccid %>
+</p>
+
 <%= form_for @invoice, url: calc_invoice_path(@invoice), method: :put do |f| %>
   <%= f.submit 'Calculate' %>
 <% end %>
