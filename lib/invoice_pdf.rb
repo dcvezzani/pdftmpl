@@ -46,6 +46,7 @@ class InvoicePdf
 
     # fill :date, @values[:date].to_s
     fill :date, @values[:date]
+    fill :invoice_number, @values[:invoice_number]
     fill :notes, @values[:notes]
 
     fill :w1_notes, @values[:w1_notes]
@@ -112,18 +113,21 @@ class InvoicePdf
     invoice_number = "CC#{invoice_prefix_seq}"
     invoice_filename = "#{invoice_number}-#{invoice_suffix}"
 
+    w1_notes = format_work_week_notes(self.invoice.work_weeks[0].started_at, self.invoice.work_weeks[0].ended_at, self.invoice.work_weeks[0].notes)
+    w2_notes = format_work_week_notes(self.invoice.work_weeks[1].started_at, self.invoice.work_weeks[1].ended_at, self.invoice.work_weeks[1].notes)
+
     {
      date: self.invoice.invoiced_at.strftime("%b %d, %Y"), 
      invoice_number: invoice_number, 
      # terms: '15 days', 
      # tax_rate: '0.00%', 
 
-     w1_notes: ((self.invoice.work_weeks.length > 0) ? self.invoice.work_weeks[0].notes : ""), 
+     w1_notes: w1_notes, 
      w1_hours: (hrs[0] or 0.0), 
      w1_rate: rate, 
      w1_total: ((hrs[0] or 0.0) * rate), 
 
-     w2_notes: ((self.invoice.work_weeks.length > 1) ? self.invoice.work_weeks[1].notes : ""), 
+     w2_notes: w2_notes, 
      w2_hours: (hrs[1] or 0.0), 
      w2_rate: rate, 
      w2_total: ((hrs[1] or 0.0) * rate), 
@@ -138,6 +142,18 @@ class InvoicePdf
      notes: self.invoice.notes, 
      invoice_filename: invoice_filename
     }
+  end
+
+  def format_work_week_notes(start_date, end_date, notes)
+    "#{format_dates(start_date, end_date)}: #{notes}"
+  end
+
+  def format_dates(start_date, end_date)
+    "#{format_date(start_date)} - #{format_date(end_date)}"
+  end
+  
+  def format_date(date)
+    date.strftime("%Y-%m-%d")
   end
   
   def pdftk
