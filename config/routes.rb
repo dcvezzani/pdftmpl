@@ -2,7 +2,9 @@ Rails.application.routes.draw do
 
   get 'pdf/show'
 
-  resources :recipes, only: [:index, :show]
+  resources :recipes, only: [:index, :show, :create, :update, :destroy]
+
+  resources :invoices_ang
 
   resources :invoices do
     resources :work_weeks
