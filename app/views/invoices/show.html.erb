@@ -31,4 +31,5 @@
 
 <%= link_to 'Report', report_invoice_path(@invoice, :format => 'pdf') %> |
 <%= link_to 'Edit', edit_invoice_path(@invoice) %> |
+<%= link_to 'Work Weeks', [@invoice, :work_weeks] %> |
 <%= link_to 'Back', invoices_path %>

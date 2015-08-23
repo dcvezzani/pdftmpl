@@ -22,9 +22,9 @@
         <td><%= work_week.notes %></td>
         <td><%= work_week.hours %></td>
         <td><%= work_week.invoice_id %></td>
-        <td><%= link_to 'Show', work_week %></td>
-        <td><%= link_to 'Edit', edit_work_week_path(work_week) %></td>
-        <td><%= link_to 'Destroy', work_week, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', [@invoice, work_week] %></td>
+        <td><%= link_to 'Edit', [:edit, @invoice, work_week] %></td>
+        <td><%= form_tag [@invoice, work_week], method: :delete do %><%= submit_tag 'Delete' %><% end %></td>
       </tr>
     <% end %>
   </tbody>
@@ -32,4 +32,4 @@
 
 <br>
 
-<%= link_to 'New Work week', new_work_week_path %>
+<%= link_to 'New Work week', [:new, @invoice, :work_week] %> | <%= link_to 'Back', [@invoice] %>

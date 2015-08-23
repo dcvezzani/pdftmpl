@@ -25,5 +25,5 @@
   <%= @work_week.invoice_id %>
 </p>
 
-<%= link_to 'Edit', edit_work_week_path(@work_week) %> |
-<%= link_to 'Back', work_weeks_path %>
+<%= link_to 'Edit', [:edit, @invoice, @work_week] %> |
+<%= link_to 'Back', [@invoice, :work_weeks] %>

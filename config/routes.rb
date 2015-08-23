@@ -4,8 +4,9 @@ Rails.application.routes.draw do
 
   resources :recipes, only: [:index, :show]
 
-  resources :work_weeks
   resources :invoices do
+    resources :work_weeks
+
     member do
       get 'report'
       put 'calc'
