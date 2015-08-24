@@ -1,0 +1,486 @@
+<style type="text/css">
+div.canvas{ width: 100%; }
+
+div.canvas-body{
+  padding-top: 2em;
+  width: 90%;
+  min-width: 900px; 
+  margin: 0 auto; 
+  position: relative;
+}
+
+div.canvas-inner{
+  width: 100%;
+  border: 1px solid green; 
+  float: left; 
+}
+
+div.invoice{
+  width: 30%; 
+  float: left; 
+}
+div.work_week{
+  width: 70%; 
+  border-left: 1px solid green; 
+  border-bottom: 1px solid green; 
+  float: right; 
+}
+div.work_week_last{
+  border-bottom: 0;
+}
+div.section{
+  padding: 1em;
+}
+div.invoice textarea, 
+div.work_week textarea{
+  width: 100%; 
+  height: 5em;
+}
+
+div.invoice h1{
+  margin-top: 0;
+  padding-top: 0;
+}
+
+div.invoice textarea{
+  height: 10em;
+}
+
+.comp-started-at, 
+.comp-notes, 
+.comp-hours, 
+.actions
+{
+  float: left; 
+  clear: both; 
+}
+
+.comp-notes{
+width: 100%; 
+}
+
+.comp-ended-at, 
+.comp-invoice-id
+{
+  float: right; 
+}
+</style>
+
+
+<div class="canvas">
+<div class="canvas-body">
+<div class="canvas-inner">
+
+  <div class="section invoice">
+
+<div flash-alert active-class="in alert" class="fade">
+  <strong class="alert-heading">Congrats!</strong>
+  <span class="alert-message">{{flash.message}}</span>
+</div>
+
+<h1>Editing Invoice</h1>
+<form class="edit_invoice" role="form">
+
+  <div class="field">
+    <label for="invoice_invoiced_at">Invoiced at</label><br>
+    <select id="invoice_invoiced_at_1i" name="invoice[invoiced_at(1i)]" ng-model='invoice.invoiced_at_1i'>
+<option value="2010">2010</option>
+<option value="2011">2011</option>
+<option value="2012">2012</option>
+<option value="2013">2013</option>
+<option value="2014">2014</option>
+<option value="2015">2015</option>
+<option value="2016">2016</option>
+<option value="2017">2017</option>
+<option value="2018">2018</option>
+<option value="2019">2019</option>
+<option value="2020">2020</option>
+</select>
+<select id="invoice_invoiced_at_2i" name="invoice[invoiced_at(2i)]" ng-model='invoice.invoiced_at_2i'>
+<option value="1">January</option>
+<option value="2">February</option>
+<option value="3">March</option>
+<option value="4">April</option>
+<option value="5">May</option>
+<option value="6">June</option>
+<option value="7">July</option>
+<option value="8">August</option>
+<option value="9">September</option>
+<option value="10">October</option>
+<option value="11">November</option>
+<option value="12">December</option>
+</select>
+<select id="invoice_invoiced_at_3i" name="invoice[invoiced_at(3i)]" ng-model='invoice.invoiced_at_3i'>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+</select>
+
+  </div>
+  <div class="field">
+    <label for="invoice_subtotal">Subtotal</label><br>
+    <input ng-model='invoice.subtotal' type="text">
+  </div>
+  <div class="field">
+    <label for="invoice_total">Total</label><br>
+    <input value="5173.245" name="invoice[total]" id="invoice_total" ng-model='invoice.total' type="text">
+  </div>
+  <div class="field">
+    <label for="invoice_notes">Notes</label><br>
+    <textarea name="invoice[notes]" id="invoice_notes" ng-model='invoice.notes'>firefighting and getting the staging environment working; documenting how we are using SOLR and the challenges we may be having with gem integration with SOLR; assisted in interviews with potential new hire</textarea>
+  </div>
+  <div class="field">
+    <label for="invoice_ccid">Ccid</label><br>
+    <input value="11" name="invoice[ccid]" id="invoice_ccid" ng-model='invoice.ccid' type="text">
+  </div>
+  <div class="actions">
+    <!-- <input name="commit" value="Update Invoice" type="submit"> -->
+
+    <button class="btn btn-default" ng-click="cancel()"> Cancel</button>
+    <button class="btn btn-primary" ng-click="save()"> Save </button>
+  </div>
+</form>
+<a href="/invoices/1">Show</a> |
+<a href="/invoices">Back</a>
+  </div>
+  <div class="work_weeks">
+    <div class="section work_week work_week_1">
+<h3>Work Week 1</h3>
+
+<form class="edit_work_week" id="edit_work_week_1" action="/invoices/1/work_weeks/1" accept-charset="UTF-8" method="post"><input name="utf8" value="✓" type="hidden"><input name="_method" value="patch" type="hidden"><input name="authenticity_token" value="DQMXLE2VzYNrKNlvz/YMH5EwPbI81ns0GxCvipoOpoNwrhxBzNjD/xddD25fMEaDZLHQ2QbOfKuJ/3n/9y1uhw==" type="hidden">
+
+  <div class="field comp-started-at">
+    <label for="work_week_started_at">Started at</label><br>
+    <select id="work_week_started_at_1i" name="work_week[started_at(1i)]">
+<option value="2010">2010</option>
+<option value="2011">2011</option>
+<option value="2012">2012</option>
+<option value="2013">2013</option>
+<option value="2014">2014</option>
+<option value="2015" selected="selected">2015</option>
+<option value="2016">2016</option>
+<option value="2017">2017</option>
+<option value="2018">2018</option>
+<option value="2019">2019</option>
+<option value="2020">2020</option>
+</select>
+<select id="work_week_started_at_2i" name="work_week[started_at(2i)]">
+<option value="1">January</option>
+<option value="2">February</option>
+<option value="3">March</option>
+<option value="4">April</option>
+<option value="5">May</option>
+<option value="6">June</option>
+<option value="7">July</option>
+<option value="8" selected="selected">August</option>
+<option value="9">September</option>
+<option value="10">October</option>
+<option value="11">November</option>
+<option value="12">December</option>
+</select>
+<select id="work_week_started_at_3i" name="work_week[started_at(3i)]">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10" selected="selected">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+</select>
+
+  </div>
+  <div class="field comp-ended-at">
+    <label for="work_week_ended_at">Ended at</label><br>
+    <select id="work_week_ended_at_1i" name="work_week[ended_at(1i)]">
+<option value="2010">2010</option>
+<option value="2011">2011</option>
+<option value="2012">2012</option>
+<option value="2013">2013</option>
+<option value="2014">2014</option>
+<option value="2015" selected="selected">2015</option>
+<option value="2016">2016</option>
+<option value="2017">2017</option>
+<option value="2018">2018</option>
+<option value="2019">2019</option>
+<option value="2020">2020</option>
+</select>
+<select id="work_week_ended_at_2i" name="work_week[ended_at(2i)]">
+<option value="1">January</option>
+<option value="2">February</option>
+<option value="3">March</option>
+<option value="4">April</option>
+<option value="5">May</option>
+<option value="6">June</option>
+<option value="7">July</option>
+<option value="8" selected="selected">August</option>
+<option value="9">September</option>
+<option value="10">October</option>
+<option value="11">November</option>
+<option value="12">December</option>
+</select>
+<select id="work_week_ended_at_3i" name="work_week[ended_at(3i)]">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14" selected="selected">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+</select>
+
+  </div>
+  <div class="field comp-notes">
+    <label for="work_week_notes">Notes</label><br>
+    <textarea name="work_week[notes]" id="work_week_notes">team meeting; firefighting; working with Brian on staging environment
+</textarea>
+  </div>
+  <div class="field comp-hours">
+    <label for="work_week_hours">Hours</label><br>
+    <input value="45.25" name="work_week[hours]" id="work_week_hours" type="text">
+  </div>
+  <div class="field comp-invoice-id">
+    <label for="work_week_invoice_id">Invoice</label><br>
+    <input value="1" name="work_week[invoice_id]" id="work_week_invoice_id" type="number">
+  </div>
+  <div class="actions">
+    <input name="commit" value="Update Work week" type="submit">
+  </div>
+</form>
+    </div>
+    <div class="section work_week work_week_last work_week_2">
+<h3>Work Week 2</h3>
+
+<form class="edit_work_week" id="edit_work_week_1" action="/invoices/1/work_weeks/1" accept-charset="UTF-8" method="post"><input name="utf8" value="✓" type="hidden"><input name="_method" value="patch" type="hidden"><input name="authenticity_token" value="7qHsJEMbjNCjixqh58BpAzV+42pllEHgXoUXfvzGD0eTDOdJwlaCrN/+zKB3BiOfwP8OAV+MRn/MasELkeXHQw==" type="hidden">
+
+  <div class="field comp-started-at">
+    <label for="work_week_started_at">Started at</label><br>
+    <select id="work_week_started_at_1i" name="work_week[started_at(1i)]">
+<option value="2010">2010</option>
+<option value="2011">2011</option>
+<option value="2012">2012</option>
+<option value="2013">2013</option>
+<option value="2014">2014</option>
+<option value="2015" selected="selected">2015</option>
+<option value="2016">2016</option>
+<option value="2017">2017</option>
+<option value="2018">2018</option>
+<option value="2019">2019</option>
+<option value="2020">2020</option>
+</select>
+<select id="work_week_started_at_2i" name="work_week[started_at(2i)]">
+<option value="1">January</option>
+<option value="2">February</option>
+<option value="3">March</option>
+<option value="4">April</option>
+<option value="5">May</option>
+<option value="6">June</option>
+<option value="7">July</option>
+<option value="8" selected="selected">August</option>
+<option value="9">September</option>
+<option value="10">October</option>
+<option value="11">November</option>
+<option value="12">December</option>
+</select>
+<select id="work_week_started_at_3i" name="work_week[started_at(3i)]">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10" selected="selected">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+</select>
+
+  </div>
+  <div class="field comp-ended-at">
+    <label for="work_week_ended_at">Ended at</label><br>
+    <select id="work_week_ended_at_1i" name="work_week[ended_at(1i)]">
+<option value="2010">2010</option>
+<option value="2011">2011</option>
+<option value="2012">2012</option>
+<option value="2013">2013</option>
+<option value="2014">2014</option>
+<option value="2015" selected="selected">2015</option>
+<option value="2016">2016</option>
+<option value="2017">2017</option>
+<option value="2018">2018</option>
+<option value="2019">2019</option>
+<option value="2020">2020</option>
+</select>
+<select id="work_week_ended_at_2i" name="work_week[ended_at(2i)]">
+<option value="1">January</option>
+<option value="2">February</option>
+<option value="3">March</option>
+<option value="4">April</option>
+<option value="5">May</option>
+<option value="6">June</option>
+<option value="7">July</option>
+<option value="8" selected="selected">August</option>
+<option value="9">September</option>
+<option value="10">October</option>
+<option value="11">November</option>
+<option value="12">December</option>
+</select>
+<select id="work_week_ended_at_3i" name="work_week[ended_at(3i)]">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14" selected="selected">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+</select>
+
+  </div>
+  <div class="field comp-notes">
+    <label for="work_week_notes">Notes</label><br>
+    <textarea name="work_week[notes]" id="work_week_notes">team meeting; firefighting; working with Brian on staging environment
+</textarea>
+  </div>
+  <div class="field comp-hours">
+    <label for="work_week_hours">Hours</label><br>
+    <input value="45.25" name="work_week[hours]" id="work_week_hours" type="text">
+  </div>
+  <div class="field comp-invoice-id">
+    <label for="work_week_invoice_id">Invoice</label><br>
+    <input value="1" name="work_week[invoice_id]" id="work_week_invoice_id" type="number">
+  </div>
+  <div class="actions">
+    <input name="commit" value="Update Work week" type="submit">
+  </div>
+</form>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+
+
+
+
+

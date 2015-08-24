@@ -8,7 +8,7 @@ class InvoicePdf
     @invoice = invoice
     @values = prepare_values
     record = PdfRecord.first
-    @values = {notes: @invoice.notes}
+    @values = prepare_values
     
     fill_out
   end
@@ -25,7 +25,7 @@ class InvoicePdf
   alias_method :export_orig, :export
 
   def export
-    output_path = export_orig(default_output_path)#(@values[:invoice_filename]))
+    output_path = export_orig(@values[:invoice_filename])#(default_output_path)
     {filename: output_path}
   end
   
@@ -45,7 +45,29 @@ class InvoicePdf
     # fill :comments, "Hello, World"
 
     # fill :date, @values[:date].to_s
+    fill :date, @values[:date]
+    fill :invoice_number, @values[:invoice_number]
     fill :notes, @values[:notes]
+
+    fill :w1_notes, @values[:w1_notes]
+    fill :w1_hours, number_with_precision(@values[:w1_hours], :precision => 2).to_s
+    fill :w1_rate, number_with_precision(@values[:w1_rate], :precision => 2).to_s
+    fill :w1_total, number_with_precision(@values[:w1_total], :precision => 2).to_s
+
+    fill :w2_notes, @values[:w2_notes]
+    fill :w2_hours, number_with_precision(@values[:w2_hours], :precision => 2).to_s
+    fill :w2_rate, number_with_precision(@values[:w2_rate], :precision => 2).to_s
+    fill :w2_total, number_with_precision(@values[:w2_total], :precision => 2).to_s
+ 
+    fill :sub_hours, number_with_precision(@values[:sub_hours], :precision => 2).to_s
+    fill :sub_rate, number_with_precision(@values[:sub_rate], :precision => 2).to_s
+    fill :sub_total, number_with_precision(@values[:sub_total], :precision => 2).to_s
+ 
+    # fill :tax_rate, number_with_precision(@values[:sub_rate], :precision => 2).to_s
+    # fill :tax, number_with_precision(@values[:sub_total], :precision => 2).to_s
+ 
+    fill :total, number_with_precision(@values[:total], :precision => 2).to_s
+ 
 # 
 #       date: values[:date], 
 # 
@@ -86,32 +108,51 @@ class InvoicePdf
     rate = user.pay_rate
     self.invoice.calculate_totals(rate)
 
-    invoice_prefix_seq = self.invoice.id.to_s.rjust(5, '0')
+    invoice_number = self.invoice.ccid_value
     invoice_suffix = self.invoice.invoiced_at.to_time.strftime("%Y-%m-%d")
-    invoice_number = "CC#{invoice_prefix_seq}"
     invoice_filename = "#{invoice_number}-#{invoice_suffix}"
+
+    w1_notes = format_work_week_notes(self.invoice.work_weeks[0].started_at, self.invoice.work_weeks[0].ended_at, self.invoice.work_weeks[0].notes)
+    w2_notes = format_work_week_notes(self.invoice.work_weeks[1].started_at, self.invoice.work_weeks[1].ended_at, self.invoice.work_weeks[1].notes)
 
     {
      date: self.invoice.invoiced_at.strftime("%b %d, %Y"), 
+     invoice_number: invoice_number, 
+     # terms: '15 days', 
+     # tax_rate: '0.00%', 
 
-     w1_notes: ((self.invoice.work_weeks.length > 0) ? self.invoice.work_weeks[0].notes : ""), 
+     w1_notes: w1_notes, 
      w1_hours: (hrs[0] or 0.0), 
      w1_rate: rate, 
-     w1_cost: ((hrs[0] or 0.0) * rate), 
+     w1_total: ((hrs[0] or 0.0) * rate), 
 
-     w1_notes: ((self.invoice.work_weeks.length > 1) ? self.invoice.work_weeks[1].notes : ""), 
-     w1_hours: (hrs[1] or 0.0), 
+     w2_notes: w2_notes, 
+     w2_hours: (hrs[1] or 0.0), 
      w2_rate: rate, 
-     w2_cost: ((hrs[1] or 0.0) * rate), 
+     w2_total: ((hrs[1] or 0.0) * rate), 
 
-     subtotal: self.invoice.subtotal, 
-     tax: 0.0, 
+     sub_hours: hrs.inject(0.00){|a,b| a+b},
+     sub_rate: rate, 
+     sub_total: self.invoice.subtotal, 
+
+     # tax: 0.0, 
      total: self.invoice.total, 
 
-     invoice_notes: self.invoice.notes, 
-     invoice_number: invoice_number, 
+     notes: self.invoice.notes.strip.capitalize, 
      invoice_filename: invoice_filename
     }
+  end
+
+  def format_work_week_notes(start_date, end_date, notes)
+    "#{format_dates(start_date, end_date)}: #{notes}"
+  end
+
+  def format_dates(start_date, end_date)
+    "#{format_date(start_date)} - #{format_date(end_date)}"
+  end
+  
+  def format_date(date)
+    date.strftime("%Y-%m-%d")
   end
   
   def pdftk

@@ -19,15 +19,42 @@ receta.config([ '$routeProvider', 'flashProvider',
       .when('/recipes',
         templateUrl: "index.html"
         controller: 'RecipesController'
-      )
-      .when('/recipes/:recipeId',
+
+      ).when('/recipes/new',
+        templateUrl: "form.html"
+        controller: 'RecipeController'
+
+      ).when('/recipes/:recipeId',
         templateUrl: "show.html"
         controller: 'RecipeController'
-      )
-      .when('/',
+
+      ).when('/recipes/:recipeId/edit',
+        templateUrl: "form.html"
+        controller: 'RecipeController'
+
+      ).when('/invoices/:invoiceId/edit',
+        templateUrl: "invoice_edit_form.html"
+        controller: 'InvoiceEditController'
+
+      ).when('/',
         templateUrl: "invoices.html"
         controller: 'InvoicesController'
       )
 ])
+
+# receta.factory 'flash', ($rootScope) ->
+#   queue = []
+#   currentMessage = ''
+#   $rootScope.$on '$routeChangeSuccess', ->
+#     currentMessage = queue.shift() or ''
+#     return
+#   {
+#     setMessage: (message) ->
+#       queue.push message
+#       return
+#     getMessage: ->
+#       currentMessage
+# 
+#   }
 
 controllers = angular.module('controllers',[])

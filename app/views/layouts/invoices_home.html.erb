@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Pdftmpl</title>
+  <title>Receta</title>
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
-<%= yield %>
+<div ng-app="receta">
+  <div class="view-container">
+    <div ng-view class="view-frame animate-view"></div>
+  </div>
+</div>
 
 </body>
 </html>
