@@ -42,5 +42,19 @@ receta.config([ '$routeProvider', 'flashProvider',
       )
 ])
 
+# receta.factory 'flash', ($rootScope) ->
+#   queue = []
+#   currentMessage = ''
+#   $rootScope.$on '$routeChangeSuccess', ->
+#     currentMessage = queue.shift() or ''
+#     return
+#   {
+#     setMessage: (message) ->
+#       queue.push message
+#       return
+#     getMessage: ->
+#       currentMessage
+# 
+#   }
 
 controllers = angular.module('controllers',[])

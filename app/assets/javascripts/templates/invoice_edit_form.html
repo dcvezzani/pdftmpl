@@ -1,14 +1,3 @@
-<aside class="flash row">
-  <article flash-alert duration="0" active-class="alert" class="col-md-6 col-md-offset-3">
-    {{flash.message}}
-  </article>
-</aside>
-
-  <div class="alert" ng-show="flash.getMessage()">
-    <b>Alert!</b>
-    <p>{{flash.getMessage()}}</p>
-  </div>
-
 <style type="text/css">
 div.canvas{ width: 100%; }
 
@@ -81,26 +70,33 @@ width: 100%;
 <div class="canvas">
 <div class="canvas-body">
 <div class="canvas-inner">
+
   <div class="section invoice">
+
+<div flash-alert active-class="in alert" class="fade">
+  <strong class="alert-heading">Congrats!</strong>
+  <span class="alert-message">{{flash.message}}</span>
+</div>
+
 <h1>Editing Invoice</h1>
 <form class="edit_invoice" role="form">
 
   <div class="field">
     <label for="invoice_invoiced_at">Invoiced at</label><br>
-    <select id="invoice_invoiced_at_1i" name="invoice[invoiced_at(1i)]">
+    <select id="invoice_invoiced_at_1i" name="invoice[invoiced_at(1i)]" ng-model='invoice.invoiced_at_1i'>
 <option value="2010">2010</option>
 <option value="2011">2011</option>
 <option value="2012">2012</option>
 <option value="2013">2013</option>
 <option value="2014">2014</option>
-<option value="2015" selected="selected">2015</option>
+<option value="2015">2015</option>
 <option value="2016">2016</option>
 <option value="2017">2017</option>
 <option value="2018">2018</option>
 <option value="2019">2019</option>
 <option value="2020">2020</option>
 </select>
-<select id="invoice_invoiced_at_2i" name="invoice[invoiced_at(2i)]">
+<select id="invoice_invoiced_at_2i" name="invoice[invoiced_at(2i)]" ng-model='invoice.invoiced_at_2i'>
 <option value="1">January</option>
 <option value="2">February</option>
 <option value="3">March</option>
@@ -108,13 +104,13 @@ width: 100%;
 <option value="5">May</option>
 <option value="6">June</option>
 <option value="7">July</option>
-<option value="8" selected="selected">August</option>
+<option value="8">August</option>
 <option value="9">September</option>
 <option value="10">October</option>
 <option value="11">November</option>
 <option value="12">December</option>
 </select>
-<select id="invoice_invoiced_at_3i" name="invoice[invoiced_at(3i)]">
+<select id="invoice_invoiced_at_3i" name="invoice[invoiced_at(3i)]" ng-model='invoice.invoiced_at_3i'>
 <option value="1">1</option>
 <option value="2">2</option>
 <option value="3">3</option>
@@ -135,7 +131,7 @@ width: 100%;
 <option value="18">18</option>
 <option value="19">19</option>
 <option value="20">20</option>
-<option value="21" selected="selected">21</option>
+<option value="21">21</option>
 <option value="22">22</option>
 <option value="23">23</option>
 <option value="24">24</option>
@@ -151,11 +147,11 @@ width: 100%;
   </div>
   <div class="field">
     <label for="invoice_subtotal">Subtotal</label><br>
-    <input value="5173.245" name="invoice[subtotal]" id="invoice_subtotal" type="text">
+    <input ng-model='invoice.subtotal' type="text">
   </div>
   <div class="field">
     <label for="invoice_total">Total</label><br>
-    <input value="5173.245" name="invoice[total]" id="invoice_total" type="text">
+    <input value="5173.245" name="invoice[total]" id="invoice_total" ng-model='invoice.total' type="text">
   </div>
   <div class="field">
     <label for="invoice_notes">Notes</label><br>
@@ -163,7 +159,7 @@ width: 100%;
   </div>
   <div class="field">
     <label for="invoice_ccid">Ccid</label><br>
-    <input value="11" name="invoice[ccid]" id="invoice_ccid" type="text">
+    <input value="11" name="invoice[ccid]" id="invoice_ccid" ng-model='invoice.ccid' type="text">
   </div>
   <div class="actions">
     <!-- <input name="commit" value="Update Invoice" type="submit"> -->

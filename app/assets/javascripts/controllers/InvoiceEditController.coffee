@@ -32,6 +32,7 @@ controllers.controller("InvoiceEditController", [ '$scope', '$routeParams', '$re
 
     $scope.save = ->
       onError = (_httpResponse)-> flash.error = "Something went wrong"
+      flash.success = 'Invoice saved!';
       if $scope.invoice.id
         $scope.invoice.$save(
           ( ()-> $location.path("/invoices/#{$scope.invoice.id}/edit") ),

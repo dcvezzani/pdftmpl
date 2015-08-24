@@ -11,4 +11,14 @@ class Invoice < ActiveRecord::Base
     invoice_prefix_seq = _value.to_s.rjust(5, '0')
     "CC#{invoice_prefix_seq}"
   end
+
+  def invoiced_at_1i
+    self.invoiced_at.strftime("%Y")
+  end
+  def invoiced_at_2i
+    self.invoiced_at.strftime("%-m")
+  end
+  def invoiced_at_3i
+    self.invoiced_at.strftime("%d")
+  end
 end
