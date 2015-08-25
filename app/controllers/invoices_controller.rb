@@ -17,11 +17,13 @@ class InvoicesController < ApplicationController
   def report
     respond_to do |format|
       format.pdf { 
-        # pdf = InvoicePdf.new(current_user, @invoice).export
-        # send_file pdf[:filename], type: 'application/pdf' 
+        # send_file TestPdfForm.new(PdfRecord.first).export, type: 'application/pdf'
 
-        pdf = InvoicePdf.new(current_user, @invoice).export_02
-        send_data pdf[:body], type: 'application/pdf' 
+        pdf = InvoicePdf.new(current_user, @invoice).export
+        send_file pdf[:filename], type: 'application/pdf' 
+
+        # pdf = InvoicePdf.new(current_user, @invoice).export_02
+        # send_data pdf[:body], type: 'application/pdf' 
       }
     end
   end
@@ -99,6 +101,6 @@ class InvoicesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def invoice_params
-      params.require(:invoice).permit(:invoiced_at, :subtotal, :total, :notes)
+      params.require(:invoice).permit(:invoiced_at, :subtotal, :total, :notes, :ccid)
     end
 end

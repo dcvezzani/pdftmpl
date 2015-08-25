@@ -5,3 +5,5 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+PdfRecord.create!(first_name: 'David', last_name: 'Vezzani', address: '5922 N. Krotik Ct.', address_2: '', city: 'Atwater', state: 'CA', zip_code: '95301', age: 43, comments: 'Loves lasagna.')

@@ -10,3 +10,7 @@ class CreateInvoices < ActiveRecord::Migration
     end
   end
 end
+
+=begin
+bin/rails g migration add_ccid_to_invoices
+=end
