@@ -36,6 +36,10 @@ receta.config([ '$routeProvider', 'flashProvider',
         templateUrl: "invoice_edit_form.html"
         controller: 'InvoiceEditController'
 
+      ).when('/invoices',
+        templateUrl: "invoices.html"
+        controller: 'InvoicesController'
+
       ).when('/',
         templateUrl: "invoices.html"
         controller: 'InvoicesController'
